@@ -1,7 +1,9 @@
+// desafio basico - incluindo bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+// definindo numero máximo de territorios
 #define max_territorio 5
 #define max_string 15
 
@@ -11,11 +13,13 @@ struct Territorio {
     int numero;
 };
 
+// definindo funcao para limpar buffer (desconsiderar \n)
 void limparBufferEntrada() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+// definindo como sera o mapa considerando as pre definiçoes estabelecidas
 int main() {
     struct Territorio territoriosmapa[max_territorio];
     int totalterritorio = 0;
@@ -33,7 +37,7 @@ int main() {
         limparBufferEntrada();
 
         switch (opcao) {
-            case 1:
+            case 1: 
                 printf("------ Cadastro de novo território ------\n");
 
                 if (totalterritorio < max_territorio) {
