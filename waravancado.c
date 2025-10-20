@@ -1,4 +1,5 @@
 //estrutura de dados - desafio mestre - modularizacao
+//inclusão de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +21,7 @@ typedef struct {
     int dados_defensor;
 } Ataque;
 
-// Protótipos
+// declarando funcoes, codificacao apos main
 void limpar_buffer();
 void cadastrar_territorios(Territorio *mapa, int *total_territorios);
 void exibir_mapa(Territorio *mapa, int total_territorios);
@@ -37,9 +38,10 @@ int main() {
     int total_territorios = 0;
     char missao[200] = "";
 
-    printf("Iniciando Jogo WAR - Desafio Aventureiro...\n");
-    srand(time(NULL));
+    printf("Iniciando Jogo WAR - Desafio Avancado...\n");
+    srand(time(NULL)); //para funcao de lancamento de dados
 
+    //alocacao dinamica e verificacao de alocacao
     mapa = (Territorio *)calloc(MAX_TERRITORIOS, sizeof(Territorio));
     if (mapa == NULL) {
         printf("ERRO: Falha na alocação de memória para o mapa (CALLOC).\n");
@@ -60,9 +62,9 @@ int main() {
     // exibir missao
     exibir_missao(missao);
 
-    // Menu de opções, incluso batalha - case 1, verifica missao e mostra qual missao
+    // Menu de opções de jogo - modo iniciante, avancado ou aleaorio
     menu(mapa, total_territorios, missao);
-
+    //importante para nao pesar programa, travar e consumir memoria em excesso
     liberar_memoria(mapa);
     return 0;
 }
@@ -120,9 +122,9 @@ void exibir_mapa(Territorio *mapa, int total_territorios) {
 void selecionar_missao(Territorio *mapa, int total_territorios, char *missao) {
     int opcao;
     printf("=== SELECIONE SUA MISSÃO ===\n");
-    printf("1 - Iniciante (conquiste 1 território)\n");
-    printf("2 - Avançado (conquiste 2 territórios)\n");
-    printf("3 - Jogar sem missão\n");
+    printf("1 - Iniciante (conquiste 1 território)\n"); //destruir um territorio sorteado pelo gerador rand
+    printf("2 - Avançado (conquiste 2 territórios)\n"); //destruir dois territorios sorteados pelo gerador rand
+    printf("3 - Jogar sem missão\n"); //ao gosto do fregues
     printf("Escolha uma opção: ");
 
     if (scanf("%d", &opcao) != 1) {
@@ -213,12 +215,12 @@ void menu(Territorio *mapa, int total_territorios, char *missao) {
 }
 
 // ----------------------------------------------------------------------------------------------
-// Função batalha
+// Função batalha - inserido dentro do menu funcao 1 para melhor organizacao
 void batalha(Territorio *mapa, int total_territorios) {
     int atacante_idx, defensor_idx;
     int dado_atacante, dado_defensor;
 
-    // Seleção de territórios
+    // Seleção de territórios atacante 
     printf("Selecione o território atacante (1-%d): ", total_territorios);
     if (scanf("%d", &atacante_idx) != 1 || atacante_idx < 1 || atacante_idx > total_territorios) {
         printf("Entrada inválida!\n");
@@ -237,7 +239,7 @@ void batalha(Territorio *mapa, int total_territorios) {
 
     limpar_buffer();
 
-    // Validações de tropa
+    // Validações de tropa - numero de tropas maior que zero
     if (mapa[atacante_idx].numero_tropas <= 0) {
         printf("Território atacante não tem tropas suficientes.\n");
         return;
